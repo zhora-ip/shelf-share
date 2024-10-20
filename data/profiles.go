@@ -2,6 +2,7 @@ package data
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 )
 
@@ -28,6 +29,29 @@ func AddUser(u *User) {
 
 func getId() int {
 	return userList[len(userList)-1].UserId + 1
+}
+
+var ErrorUserNotFound = fmt.Errorf("User not found")
+
+func UpdateUser(id int, u *User) error {
+	pos, err := findUser(id)
+	if err != nil {
+		return err
+	}
+
+	userList[pos] = u
+	userList[pos].UserId = id
+
+	return nil
+}
+
+func findUser(id int) (int, error) {
+	for i, v := range userList {
+		if v.UserId == id {
+			return i, nil
+		}
+	}
+	return -1, ErrorUserNotFound
 }
 
 type Users []*User
