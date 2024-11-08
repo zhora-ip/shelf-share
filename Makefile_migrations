@@ -1,0 +1,21 @@
+VERSION=
+USER=
+PASSWORD=
+NAME=
+
+.PHONY: migration_create
+migration_create:
+	migrate create -ext sql -dir migrations/ ${NAME}
+
+.PHONY: migration_up
+migration_up:
+	migrate -path migrations/ -database "postgresql://${USER}:${PASSWORD}@localhost:5433/shelfshare?sslmode=disable" -verbose up
+
+.PHONY: migration_down
+migration_down:
+	migrate -path migrations/ -database "postgresql://${USER}:${PASSWORD}@localhost:5433/shelfshare?sslmode=disable" -verbose down
+
+
+.PHONY: migration_force
+migration_force:
+	migration_fix: migrate -path migrations/ -database "postgresql://${USER}:${PASSWORD}@localhost:5433/shelfshare?sslmode=disable" force ${VERSION}
