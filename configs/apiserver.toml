@@ -1,7 +1,0 @@
-bind_addr = ":8080"
-log_level = "debug"
-read_time = 1 
-write_time = 1
-idle_time = 120
-database_url = "host=localhost port=5433 user=zhora password=300 dbname=shelfshare sslmode=disable"
-session_key = "1234"
