@@ -35,7 +35,7 @@ func (r *DiscussionRepository) NewMessage(m *model.Message) error {
 func (r *DiscussionRepository) FindByID(id int) (*model.Discussion, []*model.Message, error) {
 
 	d := &model.Discussion{}
-	if err := r.store.db.QueryRow("SELECT id, user_id, title, description FROM discussion").Scan(
+	if err := r.store.db.QueryRow("SELECT id, user_id, title, description FROM discussion WHERE id = $1", id).Scan(
 		&d.ID,
 		&d.UserID,
 		&d.Title,
@@ -44,7 +44,7 @@ func (r *DiscussionRepository) FindByID(id int) (*model.Discussion, []*model.Mes
 		return nil, nil, err
 	}
 
-	rows, err := r.store.db.Query("SELECT id, user_id, discussion_id, message FROM message")
+	rows, err := r.store.db.Query("SELECT id, user_id, discussion_id, message FROM message WHERE discussion_id = $1", id)
 	if err != nil {
 		return nil, nil, err
 	}
