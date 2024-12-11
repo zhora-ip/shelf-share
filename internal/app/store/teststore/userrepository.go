@@ -18,8 +18,8 @@ func (r *UserRepository) Create(u *model.User) error {
 	if err := u.BeforeCreate(); err != nil {
 		return err
 	}
-	r.users[u.Id] = u
-	u.Id = len(r.users)
+	r.users[u.ID] = u
+	u.ID = len(r.users)
 
 	return nil
 }

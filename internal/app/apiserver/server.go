@@ -1,9 +1,12 @@
 package apiserver
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"net/http"
+	"os"
+	"path/filepath"
 
 	"github.com/ZhoraIp/ShelfShare/internal/app/store"
 	"github.com/gorilla/mux"
@@ -18,7 +21,8 @@ const (
 
 var (
 	errIncorrectEmailOrPassword = errors.New("incorrect email or password")
-	errNotAuthenticated         = errors.New("not authenticated")
+	//errNotAuthenticated         = errors.New("not authenticated")
+	basePath = "/"
 )
 
 type ctxKey int8
@@ -47,28 +51,71 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	s.router.ServeHTTP(w, r)
 }
 
+func (s *server) Shutdown(ctx context.Context) error {
+	return nil
+}
+
 func (s *server) configureRouter() {
 
-	public := s.router.NewRoute().Subrouter()
-	public.Use(s.isLoggedOff)
+	execPath, err := os.Executable()
+	if err != nil {
+		s.logger.Error("Error getting executable path:", err)
+		return
+	}
+	basePath = filepath.Dir(execPath)
 
-	public.HandleFunc("/registration", s.handleRegistration()).Methods(http.MethodPost)
-	public.HandleFunc("/login", s.handleLogin()).Methods(http.MethodPost)
+	s.router.HandleFunc("/", s.handleStart())
 
-	protected := s.router.PathPrefix("/session").Subrouter()
-	protected.Use(s.authUser)
-	protected.HandleFunc("/logoff", s.handleLogoff()).Methods(http.MethodPost)
+	s.configurePublicRoutes()
+	s.configurePrivateRoutes()
+}
 
-	protected.HandleFunc("/whoami", s.handleWhoAmI()).Methods(http.MethodGet)
-	protected.HandleFunc("/users", s.handleGetUsers()).Methods(http.MethodGet)
+func (s *server) configurePublicRoutes() {
+	r := s.router.NewRoute().Subrouter()
+	r.Use(s.isLoggedOFF)
 
-	protected.HandleFunc("/books", s.handleGetBooks()).Methods(http.MethodGet)
-	protected.HandleFunc("/books/creation", s.handleCreateBooks()).Methods(http.MethodPost)
+	r.HandleFunc("/registration", s.handleGetRegistration()).Methods(http.MethodGet)
+	r.HandleFunc("/registration", s.handleRegistration()).Methods(http.MethodPost)
+	r.HandleFunc("/login", s.handleGetLogin()).Methods(http.MethodGet)
+	r.HandleFunc("/login", s.handleLogin()).Methods(http.MethodPost)
+}
 
-	private := s.router.PathPrefix("/session").Subrouter()
-	private.Use(s.authUser, s.checkUser)
-	private.HandleFunc("/users/{id:[0-9]+}/library/books/{book_id:[0-9]+}", s.handleCreateBook()).Methods(http.MethodPost)
-	private.HandleFunc("/users/{id:[0-9]+}/library", s.handleGetLibrary()).Methods(http.MethodGet)
+func (s *server) configurePrivateRoutes() {
+	r := s.router.NewRoute().Subrouter()
+	r.Use(s.authUser)
+
+	s.configureBooksRoutes(r)
+	s.configeureDiscussionRoutes(r)
+
+	r.HandleFunc("/logoff", s.handleLogoff()).Methods(http.MethodPost)
+	r.HandleFunc("/logoff", s.handleGetLogoff()).Methods(http.MethodGet)
+
+	r.HandleFunc("/whoami", s.handleWhoAmI()).Methods(http.MethodGet)
+	r.HandleFunc("/users", s.handleGetUsers()).Methods(http.MethodGet)
+
+	r.HandleFunc("/library/books/{book_id:[0-9]+}", s.handleAddBook()).Methods(http.MethodPost)
+	r.HandleFunc("/library", s.handleGetLibrary()).Methods(http.MethodGet)
+
+}
+
+func (s *server) configureBooksRoutes(r *mux.Router) {
+	r.HandleFunc("/books", s.handleGetBooks()).Methods(http.MethodGet)
+	r.HandleFunc("/books/{book_id:[0-9+]}", s.handleGetBook()).Methods(http.MethodGet)
+	r.HandleFunc("/books/creation", s.handleCreateBooks()).Methods(http.MethodPost)
+	r.HandleFunc("/books/loading", s.handleGetLoadBook()).Methods(http.MethodGet)
+	r.HandleFunc("/books/loading", s.handleLoadBook()).Methods(http.MethodPatch)
+	r.HandleFunc("/books/{book_id:[0-9]+}/feedback", s.handleFeedbackBook()).Methods(http.MethodPost)
+	r.HandleFunc("/books/{book_id:[0-9]+}/feedback", s.handleGetFeedbackBook()).Methods(http.MethodGet)
+	r.HandleFunc("/books/{book_id:[0-9]+}/uploading", s.handleUploadBook()).Methods(http.MethodGet)
+
+	r.PathPrefix("/loads/").Handler(http.StripPrefix("/loads/", http.FileServer(http.Dir("loads"))))
+
+}
+
+func (s *server) configeureDiscussionRoutes(r *mux.Router) {
+	r.HandleFunc("/discussion", s.handleCreateDiscussion()).Methods(http.MethodPost)
+	r.HandleFunc("/discussion/{discussion_id:[0-9+]}", s.handleMessageDiscussion()).Methods(http.MethodPost)
+	r.HandleFunc("/discussion/{discussion_id:[0-9]+}", s.handleGetDiscussion()).Methods(http.MethodGet)
 }
 
 func (s *server) error(w http.ResponseWriter, code int, err error) {

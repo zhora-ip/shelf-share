@@ -8,10 +8,12 @@ import (
 )
 
 type Store struct {
-	db                *sql.DB
-	userRepository    *UserRepository
-	bookRepository    *BookRepository
-	libraryRepository *LibraryRepository
+	db                   *sql.DB
+	userRepository       *UserRepository
+	bookRepository       *BookRepository
+	libraryRepository    *LibraryRepository
+	feedbackRepository   *FeedbackRepository
+	discussionRepository *DiscussionRepository
 }
 
 func New(db *sql.DB) *Store {
@@ -45,4 +47,21 @@ func (s *Store) Library() store.LibraryRepository {
 
 	s.libraryRepository = &LibraryRepository{s}
 	return s.libraryRepository
+}
+
+func (s *Store) Feedback() store.FeedbackRepository {
+	if s.feedbackRepository != nil {
+		return s.feedbackRepository
+	}
+
+	s.feedbackRepository = &FeedbackRepository{s}
+	return s.feedbackRepository
+}
+
+func (s *Store) Discussion() store.DiscussionRepository {
+	if s.discussionRepository != nil {
+		return s.discussionRepository
+	}
+	s.discussionRepository = &DiscussionRepository{s}
+	return s.discussionRepository
 }

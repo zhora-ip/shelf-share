@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Выход</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        async function logoff() {
+            try {
+                const response = await axios.post('/logoff');
+                if (response.status === 200) {
+                    alert('Вы успешно вышли из системы.');
+                    window.location.href = '/login'; 
+                }
+            } catch (error) {
+                console.error('Ошибка при выходе:', error);
+                alert('Произошла ошибка при выходе. Попробуйте снова.');
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <h1>Выход из системы</h1>
+    <p>Вы действительно хотите выйти?</p>
+    <button onclick="logoff()">Выйти</button>
+
+</body>
+</html>

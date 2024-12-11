@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход</title>
+</head>
+<body>
+    <h1>Вход в систему</h1>
+    <form id="loginForm">
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="password">Пароль:</label><br>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <input type="submit" value="Войти">
+    </form>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+    
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+    
+            const data = {
+                email: email,
+                password: password
+            };
+    
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                // 200 OK - успешный вход, 401 Unauthorized - неверные учетные данные
+                if (response.ok) {
+                    return response.json(); 
+                } else if (response.status === 401) {
+
+                    alert('Неверные учетные данные. Попробуйте снова.');
+                    window.location.href = '/login'; 
+                    throw new Error('Неверные учетные данные'); 
+                } else {
+                    throw new Error('Ошибка сети'); 
+                }
+            })
+            .then(data => {
+                console.log('Успех:', data);
+                window.location.href = '/whoami';
+            })
+            .catch((error) => {
+                console.error('Ошибка:', error);
+                // alert('Произошла ошибка: ' + error.message);
+            });
+        });
+    </script>
+    
+</body>
+</html>

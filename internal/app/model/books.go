@@ -5,14 +5,15 @@ import (
 )
 
 type Book struct {
-	Id          int     `json:"id"`
+	ID          int     `json:"id"`
 	Title       string  `json:"title"`
 	Author      string  `json:"author"`
 	Genre       string  `json:"genre"`
 	Description string  `json:"description"`
-	AvgGrade    float32 `json:"-"`
-	Format      string  `json:"-"`
-	S3Id        int     `json:"-"`
+	AvgGrade    float32 `json:"avg_grade"`
+	Format      string  `json:"format"`
+	S3ID        int     `json:"-"`
+	CreatedBy   int     `json:"created_by"`
 }
 
 func (b *Book) Validate() error {

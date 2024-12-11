@@ -1,0 +1,28 @@
+services:
+  go-backend:
+    build: ./
+    command: ./wait-for-postgres.sh db ./apishelfshare
+    ports:
+      - 9090:8080
+    depends_on:
+      - db
+    environment:
+      - DB_PASSWORD=300
+
+  db:
+    restart: always
+    image: postgres
+    volumes:
+    - ./.database/postgres/data:/var/lib//postgresql/data
+    ports:
+      - 5436:5432
+    environment:
+      POSTGRES_USER: zhora
+      POSTGRES_PASSWORD: 300
+      POSTGRES_DB: shelfshare
+
+
+
+
+
+  

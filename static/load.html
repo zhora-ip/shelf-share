@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Загрузка книги</title>
+</head>
+
+<body>
+    <h1>Загрузите книгу</h1>
+    <form id="bookUploadForm" enctype="multipart/form-data">
+        <label for="bookId">ID книги:</label>
+        <input type="text" id="bookId" name="bookId" required>
+        <br><br>
+        <label for="book">Выберите файл книги:</label>
+        <input type="file" id="book" name="book" accept=".pdf,.epub,.mobi" required>
+        <br><br>
+        <button type="submit">Загрузить</button>
+    </form>
+
+    <script>
+        document.getElementById('bookUploadForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            fetch('/books/loading', {
+                method: 'PATCH',
+                body: formData,
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); 
+                } else {
+                    throw new Error('Ошибка загрузки: ' + response.statusText);
+                }
+            })
+            .then(data => {
+                console.log('Успех:', data);
+                alert('Книга загружена успешно!');
+            })
+            .catch((error) => {
+                console.error('Ошибка:', error);
+                alert('Произошла ошибка при загрузке книги: ' + error.message);
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Просмотр книги: {{.FileName}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        #epub-viewer {
+            width: 100%;
+            height: 90vh;
+            border: 1px solid #ccc;
+        }
+        embed {
+            width: 100%;
+            height: 90vh;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
+</head>
+<body>
+    <h1>Чтение файла: {{.FileName}}</h1>
+    
+    {{if eq .FileType ".pdf"}}
+        <embed src="/loads/{{.FileName}}" type="application/pdf" />
+
+    {{else if eq .FileType ".epub"}}
+        <div id="epub-viewer"></div>
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (typeof ePub !== "undefined") {
+                var book = ePub("/loads/{{.FileName}}");
+                var rendition = book.renderTo("epub-viewer", {
+                    width: "100%",
+                    height: "100%"
+                });
+                rendition.display().catch(function(err) {
+                    console.error("Ошибка рендера EPUB:", err);
+                });
+            } else {
+                console.error("epub.js не загружен!");
+            }
+        });
+        </script>
+
+    {{else}}
+        <p>Невозможно отобразить файл этого типа.</p>
+    {{end}}
+</body>
+</html>

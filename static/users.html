@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список пользователей</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        button {
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        async function logoff() {
+            try {
+                const response = await fetch('/logoff', { method: 'POST' });
+                if (response.ok) {
+                    alert('Вы успешно вышли из системы.');
+                    window.location.href = '/login'; // Перенаправление на страницу логина
+                }
+            } catch (error) {
+                console.error('Ошибка при выходе:', error);
+                alert('Произошла ошибка при выходе. Попробуйте снова.');
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <h1>Список пользователей</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Псевдоним</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range .}}
+            <tr>
+                <td>{{.ID}}</td>
+                <td>{{.Nickname}}</td>
+                <td>{{.Email}}</td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+
+    <button onclick="logoff()">Выйти</button>
+
+</body>
+</html>

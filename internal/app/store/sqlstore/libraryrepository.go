@@ -11,11 +11,11 @@ type LibraryRepository struct {
 }
 
 func (r *LibraryRepository) AddBook(UserId, BookId int) error {
-	stmt, err := r.store.db.Prepare("INSERT INTO library (user_id, book_id) VALUES($1, $2)")
+	/*stmt, err := r.store.db.Prepare("INSERT INTO library (user_id, book_id) VALUES($1, $2)")
 	if err != nil {
 		return err
-	}
-	_, err = stmt.Exec(UserId, BookId)
+	}*/
+	_, err := r.store.db.Exec("INSERT INTO library (user_id, book_id) VALUES($1, $2)", UserId, BookId)
 	if err != nil {
 		return err
 	}
@@ -47,6 +47,11 @@ func (r *LibraryRepository) FindAll(UserId int) ([]int, error) {
 		}
 
 		library = append(library, l)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return nil, err
 	}
 
 	return library, nil

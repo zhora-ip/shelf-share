@@ -24,14 +24,14 @@ func (r *UserRepository) Create(u *model.User) error {
 		u.Nickname,
 		u.Email,
 		u.EncryptedPassword,
-	).Scan(&u.Id)
+	).Scan(&u.ID)
 }
 
 func (r *UserRepository) FindByEmail(email string) (*model.User, error) {
 	u := &model.User{}
 	if err := r.store.db.QueryRow("SELECT id, nickname, email, encrypted_password from users where email = $1",
 		email,
-	).Scan(&u.Id,
+	).Scan(&u.ID,
 		&u.Nickname,
 		&u.Email,
 		&u.EncryptedPassword,
@@ -49,7 +49,7 @@ func (r *UserRepository) Find(id int) (*model.User, error) {
 	u := &model.User{}
 	if err := r.store.db.QueryRow("SELECT id, nickname, email, encrypted_password from users where id = $1",
 		id,
-	).Scan(&u.Id,
+	).Scan(&u.ID,
 		&u.Nickname,
 		&u.Email,
 		&u.EncryptedPassword,
@@ -79,7 +79,7 @@ func (r *UserRepository) FindAll() ([]*model.User, error) {
 	for rows.Next() {
 		u := model.User{}
 		if err := rows.Scan(
-			&u.Id,
+			&u.ID,
 			&u.Nickname,
 			&u.Email,
 			&u.EncryptedPassword,
@@ -87,6 +87,11 @@ func (r *UserRepository) FindAll() ([]*model.User, error) {
 			return nil, err
 		}
 		users = append(users, &u)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return nil, err
 	}
 
 	return users, nil

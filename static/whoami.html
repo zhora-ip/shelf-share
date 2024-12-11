@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Информация о пользователе</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        button {
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        async function users() {
+            try {
+                const response = await fetch('/users', { method: 'GET' });
+                if (response.ok) {
+
+                    window.location.href = '/users'; 
+                }
+            } catch (error) {
+                console.error('Ошибка при получении списка пользователей:', error);
+                alert('Произошла ошибка. Попробуйте снова.');
+            }
+        }
+
+        async function library() {
+            try {
+                const response = await fetch('/library', { method: 'GET' });
+                if (response.ok) {
+
+                    window.location.href = '/library'; 
+                }
+            } catch (error) {
+                console.error('Ошибка при входе в библиотеку:', error);
+                alert('Произошла ошибка. Попробуйте снова.');
+            }
+        }
+        async function books() {
+            try {
+                const response = await fetch('/books', { method: 'GET' });
+                if (response.ok) {
+
+                    window.location.href = '/books'; 
+                }
+            } catch (error) {
+                console.error('Ошибка при получении списка книг:', error);
+                alert('Произошла ошибка. Попробуйте снова.');
+            }
+        }
+        async function logoff() {
+            try {
+                const response = await fetch('/logoff', { method: 'POST' });
+                if (response.ok) {
+                    alert('Вы успешно вышли из системы.');
+
+                    window.location.href = '/login';
+                }
+            } catch (error) {
+                console.error('Ошибка при выходе:', error);
+                alert('Произошла ошибка при выходе. Попробуйте снова.');
+            }
+        }
+        async function load() {
+            try {
+                const response = await fetch('/books/loading', { method: 'GET' });
+                if (response.ok) {
+                    window.location.href = '/books/loading';
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('Произошла ошибка Попробуйте снова.');
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <h1>Информация о текущем пользователе</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <td>{{.ID}}</td>
+        </tr>
+        <tr>
+            <th>Псевдоним</th>
+            <td>{{.Nickname}}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{.Email}}</td>
+        </tr>
+    </table>
+
+   
+    <button onclick="users()">Пользователи</button>
+    <button onclick="library()">Моя библиотека</button>
+    <button onclick="books()">Список книг</button>
+    <button onclick="logoff()">Выйти</button>
+    <button onclick="load()">Загрузить книгу</button>
+
+</body>
+</html>
