@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обсуждение</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .discussion {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .message {
+            border: 1px dashed #aaa;
+            padding: 8px;
+            margin-top: 10px;
+        }
+        .msg-author {
+            font-weight: bold;
+        }
+        #messageForm {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Обсуждение: {{ .Discussion.Title }}</h1>
+
+<div class="discussion">
+    <h2>Описание</h2>
+    <p>{{ .Discussion.Description }}</p>
+    <p><strong>ID: </strong>{{ .Discussion.ID }}</p>
+    <p><strong>Пользователь: </strong>{{ .Discussion.UserID }}</p>
+</div>
+
+<h2>Сообщения</h2>
+
+{{ if .Messages }}
+    {{ range .Messages }}
+        <div class="message">
+            <p class="msg-author">Сообщение от пользователя ID: {{ .UserID }}</p>
+            <p>{{ .Message }}</p>
+        </div>
+    {{ end }}
+{{ else }}
+    <p>Нет сообщений в этом обсуждении.</p>
+{{ end }}
+
+<div id="messageForm">
+    <h2>Добавить сообщение</h2>
+    <form id="addMessageForm">
+        <textarea id="message" name="message" rows="4" cols="50" required placeholder="Введите ваше сообщение..."></textarea><br>
+        <button type="submit">Отправить сообщение</button>
+    </form>
+    <span id="messageStatus"></span> 
+</div>
+
+<script>
+    const form = document.getElementById('addMessageForm');
+    const messageStatus = document.getElementById('messageStatus');
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault(); 
+
+        const message = document.getElementById('message').value;
+
+        try {
+            const response = await fetch(window.location.href, { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message }) 
+            });
+
+            if (response.status === 201) { 
+                location.reload(); 
+            } else {
+                const errorData = await response.json();
+                messageStatus.textContent = `Ошибка: ${errorData.error || 'Не удалось отправить сообщение.'}`;
+                messageStatus.style.color = 'red';
+            }
+        } catch (error) {
+            console.error('Ошибка при отправке сообщения:', error);
+            messageStatus.textContent = 'Произошла врожающая ошибка. Пожалуйста, попробуйте позже.';
+            messageStatus.style.color = 'red';
+        }
+    });
+</script>
+
+</body>
+</html>

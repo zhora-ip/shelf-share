@@ -22,7 +22,7 @@
 
     <script>
         document.getElementById('registrationForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Предотвращаем стандартное поведение отправки формы
+            event.preventDefault(); 
 
             const nickname = document.getElementById('nickname').value;
             const email = document.getElementById('email').value;
@@ -60,7 +60,6 @@
             })
             .catch((error) => {
                 console.error('Ошибка:', error);
-                // alert('Произошла ошибка: ' + error.message);
             });
         });
     </script>

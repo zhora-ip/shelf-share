@@ -30,7 +30,7 @@
                 const response = await fetch('/logoff', { method: 'POST' });
                 if (response.ok) {
                     alert('Вы успешно вышли из системы.');
-                    window.location.href = '/login'; // Перенаправление на страницу логина
+                    window.location.href = '/login'; 
                 }
             } catch (error) {
                 console.error('Ошибка при выходе:', error);
@@ -42,7 +42,7 @@
                 const response = await fetch('/logoff', { method: 'POST' });
                 if (response.ok) {
                     alert('Вы успешно вышли из системы.');
-                    window.location.href = '/login'; // Перенаправление на страницу логина
+                    window.location.href = '/login'; 
                 }
             } catch (error) {
                 console.error('Ошибка при выходе:', error);

@@ -12,7 +12,6 @@ var (
 func TestMain(m *testing.M) {
 	databaseURL = os.Getenv("DATABASE_URL")
 	if databaseURL == "" {
-		/* delete user + password */
 		databaseURL = "host=localhost port=5433 user=zhora password=300 dbname=shelfshare_test sslmode=disable"
 	}
 

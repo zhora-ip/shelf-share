@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"path/filepath"
 	"strconv"
 
 	"github.com/ZhoraIp/ShelfShare/internal/app/model"
@@ -100,8 +101,15 @@ func (s *server) handleGetDiscussion() http.HandlerFunc {
 			return
 		}
 
-		res := []interface{}{d, ms}
+		res := struct {
+			Discussion *model.Discussion
+			Messages   []*model.Message
+		}{
+			Discussion: d,
+			Messages:   ms,
+		}
 
-		s.respond(w, http.StatusOK, res)
+		//s.respond(w, http.StatusOK, res)
+		s.executeTemplate(w, res, filepath.Join(basePath, "/static/forum.html"))
 	}
 }

@@ -84,5 +84,4 @@ func TestUser_BeforeCreate(t *testing.T) {
 
 	assert.NoError(t, u.BeforeCreate())
 	assert.NotEmpty(t, u.EncryptedPassword)
-
 }

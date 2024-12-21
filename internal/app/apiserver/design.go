@@ -36,6 +36,11 @@ func (s *server) handleGetLoadBook() http.HandlerFunc {
 		s.executeTemplate(w, nil, filepath.Join(basePath, "/static/load.html"))
 	}
 }
+func (s *server) handleGetCreateDiscussion() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		s.executeTemplate(w, nil, filepath.Join(basePath, "/static/discussion.html"))
+	}
+}
 
 func (s *server) executeTemplate(w http.ResponseWriter, data interface{}, filepath string) {
 	w.Header().Set("Cache-Control", "no-store")

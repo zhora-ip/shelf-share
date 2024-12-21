@@ -43,10 +43,10 @@ func (s *server) handleFeedbackBook() http.HandlerFunc {
 
 		/* maybe need transactions create feedback + update grade */
 
-		if err := s.store.Book().UpdateGrade(book_id); err != nil {
+		/*if err := s.store.Book().UpdateGrade(book_id); err != nil {
 			s.error(w, http.StatusInternalServerError, err)
 			return
-		}
+		} */
 
 		s.respond(w, http.StatusOK, f)
 	}

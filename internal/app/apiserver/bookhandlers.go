@@ -74,7 +74,7 @@ func (s *server) handleGetBooks() http.HandlerFunc {
 		title := query.Get("title")
 		genre := query.Get("genre")
 
-		books, err := s.store.Book().FindAll()
+		bs, err := s.store.Book().FindAll()
 		if err != nil {
 			s.error(w, http.StatusInternalServerError, err)
 			return
@@ -82,7 +82,7 @@ func (s *server) handleGetBooks() http.HandlerFunc {
 
 		result := make([]*model.Book, 0)
 
-		for _, v := range books {
+		for _, v := range bs {
 			if (author == "" || author == v.Author) && (title == "" || title == v.Title) && (genre == "" || genre == v.Genre) {
 				result = append(result, v)
 			}

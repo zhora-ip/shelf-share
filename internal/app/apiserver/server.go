@@ -113,9 +113,11 @@ func (s *server) configureBooksRoutes(r *mux.Router) {
 }
 
 func (s *server) configeureDiscussionRoutes(r *mux.Router) {
+	r.HandleFunc("/discussion", s.handleGetCreateDiscussion()).Methods(http.MethodGet)
 	r.HandleFunc("/discussion", s.handleCreateDiscussion()).Methods(http.MethodPost)
-	r.HandleFunc("/discussion/{discussion_id:[0-9+]}", s.handleMessageDiscussion()).Methods(http.MethodPost)
+	r.HandleFunc("/discussion/{discussion_id:[0-9]+}", s.handleMessageDiscussion()).Methods(http.MethodPost)
 	r.HandleFunc("/discussion/{discussion_id:[0-9]+}", s.handleGetDiscussion()).Methods(http.MethodGet)
+
 }
 
 func (s *server) error(w http.ResponseWriter, code int, err error) {

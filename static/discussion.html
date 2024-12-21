@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создать обсуждение</title>
+</head>
+<body>
+    <h1>Создать обсуждение</h1>
+    <form id="createDiscussionForm">
+        <label for="title">Заголовок:</label><br>
+        <input type="text" id="title" name="title" required><br><br>
+
+        <label for="description">Описание:</label><br>
+        <textarea id="description" name="description" rows="4" cols="50" required></textarea><br><br>
+
+        <button type="submit">Создать</button>
+        <span id="message"></span>
+    </form>
+
+    <script>
+        const form = document.getElementById('createDiscussionForm');
+        const messageElement = document.getElementById('message');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            messageElement.textContent = ''; 
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+
+            const data = { title, description };
+
+            try {
+                const response = await fetch('/discussion', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    const discussionData = await response.json();
+                    console.log("Received Data:", discussionData); 
+                    console.log("ID:", discussionData.id);
+
+                    alert(`Обсуждение создано! ID: ${discussionData.id}`); 
+                    window.location.href = `/discussion/${discussionData.id}`;
+                } else if (response.status === 422) {
+                    const errorData = await response.json();
+                    const errorMessage = errorData.error || 'Ошибка создания обсуждения.';
+                    messageElement.textContent = errorMessage;
+                    messageElement.style.color = 'red';
+                } else if (response.status === 500) {
+                    messageElement.textContent = 'Произошла внутренняя ошибка сервера. Попробуйте позже.';
+                    messageElement.style.color = 'red';
+                } else {
+                    messageElement.textContent = `Произошла ошибка (HTTP ${response.status}). Попробуйте позже.`;
+                    messageElement.style.color = 'red';
+                }
+            } catch (error) {
+                console.error('Error creating discussion:', error);
+                messageElement.textContent = 'Произошла непредвиденная ошибка. Попробуйте позже.';
+                messageElement.style.color = 'red';
+            }
+        });
+    </script>
+</body>
+</html>

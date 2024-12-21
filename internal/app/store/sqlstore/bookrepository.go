@@ -51,7 +51,7 @@ func (r *BookRepository) FindByID(id int) (*model.Book, error) {
 func (r *BookRepository) FindByAuthor(author string) ([]*model.Book, error) {
 	books := []*model.Book{}
 
-	rows, err := r.store.db.Query("id, author, title, genre, description, COALESCE(avg_grade, 0.0), COALESCE(format, ''), created_by from books WHERE author = $1", author)
+	rows, err := r.store.db.Query("SELECT id, author, title, genre, description, COALESCE(avg_grade, 0.0), COALESCE(format, ''), created_by from books WHERE author = $1", author)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, store.ErrRecordNotFound
@@ -87,7 +87,7 @@ func (r *BookRepository) FindByAuthor(author string) ([]*model.Book, error) {
 func (r *BookRepository) FindByTitle(title string) ([]*model.Book, error) {
 	books := []*model.Book{}
 
-	rows, err := r.store.db.Query("id, author, title, genre, description, COALESCE(avg_grade, 0.0), COALESCE(format, ''), created_by from books WHERE title = $1", title)
+	rows, err := r.store.db.Query("SELECT id, author, title, genre, description, COALESCE(avg_grade, 0.0), COALESCE(format, ''), created_by from books WHERE title = $1", title)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, store.ErrRecordNotFound
@@ -123,7 +123,7 @@ func (r *BookRepository) FindByTitle(title string) ([]*model.Book, error) {
 func (r *BookRepository) FindByGenre(genre string) ([]*model.Book, error) {
 	books := []*model.Book{}
 
-	rows, err := r.store.db.Query("id, author, title, genre, description, COALESCE(avg_grade, 0.0), COALESCE(format, ''), created_by from books WHERE genre = $1", genre)
+	rows, err := r.store.db.Query("SELECT id, author, title, genre, description, COALESCE(avg_grade, 0.0), COALESCE(format, ''), created_by from books WHERE genre = $1", genre)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, store.ErrRecordNotFound

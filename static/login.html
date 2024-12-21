@@ -37,7 +37,7 @@
                 body: JSON.stringify(data)
             })
             .then(response => {
-                // 200 OK - успешный вход, 401 Unauthorized - неверные учетные данные
+        
                 if (response.ok) {
                     return response.json(); 
                 } else if (response.status === 401) {
@@ -55,7 +55,7 @@
             })
             .catch((error) => {
                 console.error('Ошибка:', error);
-                // alert('Произошла ошибка: ' + error.message);
+        
             });
         });
     </script>
