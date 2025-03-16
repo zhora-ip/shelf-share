@@ -1,6 +1,6 @@
 package sqlstore
 
-import "github.com/ZhoraIp/ShelfShare/internal/app/model"
+import "github.com/zhora-ip/shelf-share/internal/app/model"
 
 type DiscussionRepository struct {
 	store *Store

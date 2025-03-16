@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/BurntSushi/toml"
-	"github.com/ZhoraIp/ShelfShare/internal/app/apiserver"
+	"github.com/zhora-ip/shelf-share/internal/app/apiserver"
 )
 
 var (

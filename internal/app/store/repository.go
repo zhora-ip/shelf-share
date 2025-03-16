@@ -1,7 +1,7 @@
 package store
 
 import (
-	"github.com/ZhoraIp/ShelfShare/internal/app/model"
+	"github.com/zhora-ip/shelf-share/internal/app/model"
 )
 
 type UserRepository interface {

@@ -9,7 +9,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/ZhoraIp/ShelfShare/internal/app/store/sqlstore"
+	"github.com/zhora-ip/shelf-share/internal/app/store/sqlstore"
 	"github.com/gorilla/sessions"
 )
 

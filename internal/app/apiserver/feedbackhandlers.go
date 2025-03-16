@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/ZhoraIp/ShelfShare/internal/app/model"
+	"github.com/zhora-ip/shelf-share/internal/app/model"
 	"github.com/gorilla/mux"
 )
 

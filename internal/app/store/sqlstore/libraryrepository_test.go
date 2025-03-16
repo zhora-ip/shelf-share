@@ -3,8 +3,8 @@ package sqlstore_test
 import (
 	"testing"
 
-	"github.com/ZhoraIp/ShelfShare/internal/app/model"
-	"github.com/ZhoraIp/ShelfShare/internal/app/store/sqlstore"
+	"github.com/zhora-ip/shelf-share/internal/app/model"
+	"github.com/zhora-ip/shelf-share/internal/app/store/sqlstore"
 	"github.com/stretchr/testify/assert"
 )
 

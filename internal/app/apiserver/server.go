@@ -8,7 +8,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/ZhoraIp/ShelfShare/internal/app/store"
+	"github.com/zhora-ip/shelf-share/internal/app/store"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
 	"github.com/sirupsen/logrus"
@@ -113,11 +113,11 @@ func (s *server) configureBooksRoutes(r *mux.Router) {
 }
 
 func (s *server) configeureDiscussionRoutes(r *mux.Router) {
-	r.HandleFunc("/discussion", s.handleGetCreateDiscussion()).Methods(http.MethodGet)
-	r.HandleFunc("/discussion", s.handleCreateDiscussion()).Methods(http.MethodPost)
-	r.HandleFunc("/discussion/{discussion_id:[0-9]+}", s.handleMessageDiscussion()).Methods(http.MethodPost)
-	r.HandleFunc("/discussion/{discussion_id:[0-9]+}", s.handleGetDiscussion()).Methods(http.MethodGet)
-
+	r.HandleFunc("/discussions/create", s.handleGetCreateDiscussion()).Methods(http.MethodGet)
+	r.HandleFunc("/discussions/create", s.handleCreateDiscussion()).Methods(http.MethodPost)
+	r.HandleFunc("/discussions/{discussion_id:[0-9]+}", s.handleMessageDiscussion()).Methods(http.MethodPost)
+	r.HandleFunc("/discussions/{discussion_id:[0-9]+}", s.handleGetDiscussion()).Methods(http.MethodGet)
+	//r.HandleFunc("/discussions", s.handleGetDiscussions()).Methods(http.MethodGet)
 }
 
 func (s *server) error(w http.ResponseWriter, code int, err error) {

@@ -29,8 +29,7 @@
             try {
                 const response = await fetch('/users', { method: 'GET' });
                 if (response.ok) {
-
-                    window.location.href = '/users'; 
+                    window.location.href = '/users';
                 }
             } catch (error) {
                 console.error('Ошибка при получении списка пользователей:', error);
@@ -42,32 +41,31 @@
             try {
                 const response = await fetch('/library', { method: 'GET' });
                 if (response.ok) {
-
-                    window.location.href = '/library'; 
+                    window.location.href = '/library';
                 }
             } catch (error) {
                 console.error('Ошибка при входе в библиотеку:', error);
                 alert('Произошла ошибка. Попробуйте снова.');
             }
         }
+
         async function books() {
             try {
                 const response = await fetch('/books', { method: 'GET' });
                 if (response.ok) {
-
-                    window.location.href = '/books'; 
+                    window.location.href = '/books';
                 }
             } catch (error) {
                 console.error('Ошибка при получении списка книг:', error);
                 alert('Произошла ошибка. Попробуйте снова.');
             }
         }
+
         async function logoff() {
             try {
                 const response = await fetch('/logoff', { method: 'POST' });
                 if (response.ok) {
                     alert('Вы успешно вышли из системы.');
-
                     window.location.href = '/login';
                 }
             } catch (error) {
@@ -75,6 +73,7 @@
                 alert('Произошла ошибка при выходе. Попробуйте снова.');
             }
         }
+
         async function load() {
             try {
                 const response = await fetch('/books/loading', { method: 'GET' });
@@ -86,10 +85,19 @@
                 alert('Произошла ошибка Попробуйте снова.');
             }
         }
+
+        async function forum() {
+            const discussionNumber = prompt('Введите номер обсуждения:');
+            if (discussionNumber) {
+                const discussionUrl = `/discussions/${encodeURIComponent(discussionNumber)}`;
+                window.location.href = discussionUrl;
+            } else {
+                alert('Номер обсуждения не может быть пустым.');
+            }
+        }
     </script>
 </head>
 <body>
-
     <h1>Информация о текущем пользователе</h1>
     <table>
         <tr>
@@ -106,12 +114,11 @@
         </tr>
     </table>
 
-   
     <button onclick="users()">Пользователи</button>
     <button onclick="library()">Моя библиотека</button>
     <button onclick="books()">Список книг</button>
     <button onclick="logoff()">Выйти</button>
     <button onclick="load()">Загрузить книгу</button>
-
+    <button onclick="forum()">Форум</button>
 </body>
 </html>

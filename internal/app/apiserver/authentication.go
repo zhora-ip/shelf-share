@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/ZhoraIp/ShelfShare/internal/app/model"
+	"github.com/zhora-ip/shelf-share/internal/app/model"
 )
 
 func (s *server) handleRegistration() http.HandlerFunc {

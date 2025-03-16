@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"path/filepath"
 
-	"github.com/ZhoraIp/ShelfShare/internal/app/model"
+	"github.com/zhora-ip/shelf-share/internal/app/model"
 )
 
 func (s *server) handleWhoAmI() http.HandlerFunc {

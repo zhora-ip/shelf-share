@@ -3,7 +3,7 @@ package sqlstore
 import (
 	"database/sql"
 
-	"github.com/ZhoraIp/ShelfShare/internal/app/store"
+	"github.com/zhora-ip/shelf-share/internal/app/store"
 )
 
 type LibraryRepository struct {

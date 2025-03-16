@@ -3,7 +3,7 @@ package model_test
 import (
 	"testing"
 
-	"github.com/ZhoraIp/ShelfShare/internal/app/model"
+	"github.com/zhora-ip/shelf-share/internal/app/model"
 	"github.com/stretchr/testify/assert"
 )
 

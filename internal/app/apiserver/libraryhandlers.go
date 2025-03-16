@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"path/filepath"
 
-	"github.com/ZhoraIp/ShelfShare/internal/app/model"
-	"github.com/ZhoraIp/ShelfShare/internal/app/store"
+	"github.com/zhora-ip/shelf-share/internal/app/model"
+	"github.com/zhora-ip/shelf-share/internal/app/store"
 )
 
 func (s *server) handleGetLibrary() http.HandlerFunc {
