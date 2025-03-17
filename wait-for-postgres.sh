@@ -14,7 +14,7 @@ done
 
 >&2 echo "Postgres is up - executing command"
 
-make -f Makefile_migrations migration_up USER=zhora PASSWORD=$DB_PASSWORD HOST="$host" PORT=5432
+make migration_up USER=zhora PASSWORD=$DB_PASSWORD HOST="$host" PORT=5432
 
 exec $cmd
 

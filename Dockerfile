@@ -10,6 +10,6 @@ RUN apt-get -y install postgresql-client
 RUN chmod +x wait-for-postgres.sh
 
 
-RUN make
+RUN make build
 
-CMD ["./apishelfshare"]
+#CMD ["./apishelfshare"]

@@ -7,6 +7,10 @@ HOST=172.31.122.239
 PORT=5433
 DB=shelfshare
 
+.PHONY: run
+run: build
+	./cmd/apishelfshare
+
 
 .PHONY: build
 build:
@@ -33,5 +37,5 @@ migration_down:
 migration_force:
 	migrate -path database/migration/ -database "postgresql://${USER}:${PASSWORD}@${HOST}:${PORT}/${DB}?sslmode=disable" force ${VERSION}
 
-.DEFAULT_GOAL := build
+.DEFAULT_GOAL := run
 
